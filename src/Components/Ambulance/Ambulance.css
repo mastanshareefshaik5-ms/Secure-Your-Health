@@ -1,0 +1,39 @@
+.ambulance-page {
+    text-align: center;
+    padding: 30px;
+}
+
+.ambulance-page h1 {
+    color: #e53935;
+    margin-bottom: 20px;
+}
+
+.ambulance-image {
+    width: 500px;
+    max-width: 90%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    display: block;
+    margin: 20px auto;
+}
+
+.ambulance-page h2 {
+    color: #333;
+    margin: 15px 0;
+}
+
+.ambulance-page p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.ambulance-page ul {
+    display: inline-block;
+    text-align: left;
+    font-size: 18px;
+}
+
+.ambulance-page li {
+    margin: 8px 0;
+}
