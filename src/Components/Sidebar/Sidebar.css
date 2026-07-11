@@ -1,0 +1,40 @@
+/* Sidebar */
+
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: #0b7dda;
+    color: white;
+    padding: 20px;
+}
+
+/* Heading */
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* List */
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* List Items */
+
+.sidebar ul li {
+    padding: 12px;
+    margin-bottom: 10px;
+    background-color: #1e90ff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Hover Effect */
+
+.sidebar ul li:hover {
+    background-color: #085a9c;
+}

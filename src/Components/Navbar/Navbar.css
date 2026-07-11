@@ -1,0 +1,92 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #0b7dda;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+}
+
+/* Logo */
+.logo h2 {
+    font-size: 28px;
+}
+
+/* Menu */
+.menu {
+    display: flex;
+    gap: 25px;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.menu a:hover {
+    color: yellow;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.buttons button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.login {
+    background-color: white;
+    color: #0b7dda;
+}
+
+.signup {
+    background-color: green;
+    color: white;
+}
+
+.login:hover {
+    background-color: #e6e6e6;
+}
+
+.signup:hover {
+    background-color: darkgreen;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .buttons button {
+        width: 100%;
+    }
+}

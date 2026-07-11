@@ -1,0 +1,48 @@
+/* Footer */
+
+.footer {
+    background-color: #0b7dda;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Heading */
+
+.footer h3 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+/* Paragraphs */
+
+.footer p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+/* Horizontal Line */
+
+.footer hr {
+    width: 80%;
+    margin: 15px auto;
+    border: 1px solid white;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .footer {
+        padding: 15px;
+    }
+
+    .footer h3 {
+        font-size: 20px;
+    }
+
+    .footer p {
+        font-size: 14px;
+    }
+}
