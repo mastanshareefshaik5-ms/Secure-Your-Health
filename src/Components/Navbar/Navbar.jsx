@@ -1,28 +1,63 @@
 import "./Navbar.css";
+import { Link } from "react-router-dom";
+import Logo from "../../Images/Logo.png";
 
 function Navbar() {
   return (
-    <div className="navbar">
-
-      <div className="logo">
-        <h2>🏥 Secure Your Health</h2>
+    <nav className="navbar">
+      {/* Logo Section */}
+      <div className="logo-section">
+        <img src={Logo} alt="Logo" className="logo" />
+        <h2>Secure Your Health</h2>
       </div>
 
-      <div className="menu">
-        <a href="#">Home</a>
-        <a href="#">Hospitals</a>
-        <a href="#">Doctors</a>
-        <a href="#">Medicines</a>
-        <a href="#">Appointment</a>
-        <a href="#">Contact</a>
-      </div>
+      {/* Navigation Menu */}
+      <ul className="nav-links">
+        <li>
+          <Link to="/">Home</Link>
+        </li>
 
-      <div className="buttons">
-        <button className="login">Login</button>
-        <button className="signup">Sign Up</button>
-      </div>
+        <li>
+          <Link to="/hospitals">Hospitals</Link>
+        </li>
 
-    </div>
+        <li>
+          <Link to="/doctors">Doctors</Link>
+        </li>
+
+        <li>
+          <Link to="/medicines">Medicines</Link>
+        </li>
+
+        <li>
+          <Link to="/ambulance">Ambulance</Link>
+        </li>
+
+        <li>
+          <Link to="/appointment">Appointment</Link>
+        </li>
+
+        <li>
+          <Link to="/healthtips">Health Tips</Link>
+        </li>
+
+        <li>
+          <Link to="/contact">Contact</Link>
+        </li>
+
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
+
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
+
+        <li>
+          <Link to="/register">Register</Link>
+        </li>
+      </ul>
+    </nav>
   );
 }
 
