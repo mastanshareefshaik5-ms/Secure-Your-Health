@@ -1,0 +1,85 @@
+/* ==========================
+   HOSPITAL PAGE
+========================== */
+
+.hospital-container {
+    width: 100%;
+    padding: 30px;
+    background: #f5f9ff;
+}
+
+.hospital-title {
+    text-align: center;
+    font-size: 40px;
+    color: #0077cc;
+    margin-bottom: 10px;
+}
+
+.hospital-subtitle {
+    text-align: center;
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 35px;
+}
+
+.hospital-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+    gap: 30px;
+}
+
+.hospital-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    transition: .3s;
+}
+
+.hospital-card:hover {
+    transform: translateY(-8px);
+}
+
+.hospital-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.hospital-card h2 {
+    padding: 15px;
+    color: #0077cc;
+}
+
+.hospital-card p {
+    padding: 0 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.location {
+    color: green;
+    font-weight: bold;
+}
+
+.rating {
+    color: orange;
+    font-weight: bold;
+    padding: 15px;
+}
+
+.book-btn {
+    width: calc(100% - 30px);
+    margin: 15px;
+    padding: 12px;
+    border: none;
+    background: #0077cc;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.book-btn:hover {
+    background: #005fa3;
+}
