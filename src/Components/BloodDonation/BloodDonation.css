@@ -1,0 +1,72 @@
+.blood-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f8fc;
+    padding: 40px;
+}
+
+.blood-card {
+    width: 500px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
+.blood-card h1 {
+    text-align: center;
+    color: #d90429;
+    margin-bottom: 25px;
+}
+
+.blood-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.blood-card input,
+.blood-card select {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.blood-card input:focus,
+.blood-card select:focus {
+    outline: none;
+    border-color: #d90429;
+    box-shadow: 0 0 5px rgba(217,4,41,.3);
+}
+
+.date-label {
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.blood-card button {
+    padding: 14px;
+    background: #d90429;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.blood-card button:hover {
+    background: #a60320;
+}
+
+@media (max-width:768px){
+
+    .blood-card{
+        width:100%;
+    }
+
+}
