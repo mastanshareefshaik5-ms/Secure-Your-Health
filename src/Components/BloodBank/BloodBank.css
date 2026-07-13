@@ -1,0 +1,73 @@
+.bloodbank-container{
+    padding:30px;
+    background:#f5f9ff;
+    min-height:100vh;
+}
+
+.bloodbank-container h1{
+    text-align:center;
+    color:#d90429;
+    margin-bottom:25px;
+}
+
+.search-box{
+    width:400px;
+    display:block;
+    margin:0 auto 30px;
+    padding:12px;
+    font-size:17px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.bloodbank-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.bloodbank-card{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    transition:.3s;
+}
+
+.bloodbank-card:hover{
+    transform:translateY(-8px);
+}
+
+.bloodbank-card h2{
+    color:#0077cc;
+    margin-bottom:15px;
+}
+
+.bloodbank-card p{
+    margin:10px 0;
+    color:#555;
+}
+
+.bloodbank-card button{
+    margin-top:20px;
+    padding:12px 25px;
+    background:#d90429;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.bloodbank-card button:hover{
+    background:#b00020;
+}
+
+@media(max-width:768px){
+
+.search-box{
+    width:100%;
+}
+
+}
