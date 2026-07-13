@@ -1,21 +1,49 @@
 import "./Sidebar.css";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
-    <div className="sidebar">
-      <h2>Menu</h2>
+    <aside className="sidebar">
 
-      <ul>
-        <li>🏠 Dashboard</li>
-        <li>🏥 Hospitals</li>
-        <li>👨‍⚕️ Doctors</li>
-        <li>💊 Medicines</li>
-        <li>📅 Appointments</li>
-        <li>❤️ Health Tips</li>
-        <li>🚑 Emergency</li>
-        <li>📞 Contact Us</li>
+      <h2 className="sidebar-title">Healthcare Services</h2>
+
+      <ul className="sidebar-menu">
+
+        <li>
+          <Link to="/dashboard">🏠 Dashboard</Link>
+        </li>
+
+        <li>
+          <Link to="/bmi">🩺 BMI Calculator</Link>
+        </li>
+
+        <li>
+          <Link to="/blooddonation">🩸 Blood Donation</Link>
+        </li>
+
+        <li>
+          <Link to="/bloodbank">🏥 Blood Bank</Link>
+        </li>
+
+        <li>
+          <Link to="/medicineorder">💊 Medicine Order</Link>
+        </li>
+
+        <li>
+          <Link to="/cart">🛒 Cart</Link>
+        </li>
+
+        <li>
+          <Link to="/chatbot">🤖 AI ChatBot</Link>
+        </li>
+
+        <li>
+          <Link to="/darkmode">🌙 Dark Mode</Link>
+        </li>
+
       </ul>
-    </div>
+
+    </aside>
   );
 }
 
