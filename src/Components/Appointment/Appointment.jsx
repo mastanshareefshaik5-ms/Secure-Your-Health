@@ -1,151 +1,150 @@
 import "./Appointment.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Appointment() {
+
+  const [appointments, setAppointments] = useState([]);
+
   const [formData, setFormData] = useState({
-    patientName: "",
-    mobile: "",
-    email: "",
-    hospital: "",
+    patient: "",
     doctor: "",
     date: "",
-    problem: "",
+    time: ""
   });
 
-  const [message, setMessage] = useState("");
+  useEffect(() => {
+
+    const data = [
+      {
+        patient: "Rahul",
+        doctor: "Dr. Deepika",
+        date: "2026-07-20",
+        time: "10:00 AM"
+      }
+    ];
+
+    setAppointments(data);
+
+  }, []);
 
   const handleChange = (e) => {
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
+
   };
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
 
-    setMessage("✅ Appointment Booked Successfully!");
+    setAppointments([...appointments, formData]);
 
     setFormData({
-      patientName: "",
-      mobile: "",
-      email: "",
-      hospital: "",
+      patient: "",
       doctor: "",
       date: "",
-      problem: "",
+      time: ""
     });
+
+    alert("Appointment Booked Successfully");
+
   };
 
   return (
+
     <div className="appointment-container">
 
-      <h1 className="appointment-title">
-        Book an Appointment
-      </h1>
+      <h1>Book Appointment</h1>
 
-      <p className="appointment-subtitle">
-        Fill the form below to schedule your appointment.
-      </p>
+      <form onSubmit={handleSubmit}>
 
-      <div className="appointment-box">
+        <input
+          type="text"
+          name="patient"
+          placeholder="Patient Name"
+          value={formData.patient}
+          onChange={handleChange}
+          required
+        />
 
-        <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="doctor"
+          placeholder="Doctor Name"
+          value={formData.doctor}
+          onChange={handleChange}
+          required
+        />
 
-          <label>Patient Name</label>
-          <input
-            type="text"
-            name="patientName"
-            placeholder="Enter Patient Name"
-            value={formData.patientName}
-            onChange={handleChange}
-            required
-          />
+        <input
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+        />
 
-          <label>Mobile Number</label>
-          <input
-            type="tel"
-            name="mobile"
-            placeholder="Enter Mobile Number"
-            value={formData.mobile}
-            onChange={handleChange}
-            required
-          />
+        <input
+          type="time"
+          name="time"
+          value={formData.time}
+          onChange={handleChange}
+          required
+        />
 
-          <label>Email Address</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+        <button>Book Appointment</button>
 
-          <label>Select Hospital</label>
-          <select
-            name="hospital"
-            value={formData.hospital}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Choose Hospital</option>
-            <option>Apollo Hospital</option>
-            <option>Yashoda Hospital</option>
-            <option>CARE Hospital</option>
-            <option>KIMS Hospital</option>
-            <option>AIIMS</option>
-          </select>
+      </form>
 
-          <label>Select Doctor</label>
-          <select
-            name="doctor"
-            value={formData.doctor}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Choose Doctor</option>
-            <option>Cardiologist</option>
-            <option>Neurologist</option>
-            <option>Orthopedic</option>
-            <option>Dermatologist</option>
-            <option>General Physician</option>
-          </select>
+      <h2>Booked Appointments</h2>
 
-          <label>Appointment Date</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
+      <table>
 
-          <label>Problem Description</label>
-          <textarea
-            name="problem"
-            placeholder="Describe your health problem..."
-            value={formData.problem}
-            onChange={handleChange}
-            required
-          ></textarea>
+        <thead>
 
-          <button type="submit" className="book-btn">
-            Book Appointment
-          </button>
+          <tr>
 
-          {message && (
-            <p className="success-message">
-              {message}
-            </p>
-          )}
+            <th>Patient</th>
 
-        </form>
+            <th>Doctor</th>
 
-      </div>
+            <th>Date</th>
+
+            <th>Time</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {appointments.map((item, index) => (
+
+            <tr key={index}>
+
+              <td>{item.patient}</td>
+
+              <td>{item.doctor}</td>
+
+              <td>{item.date}</td>
+
+              <td>{item.time}</td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
 
     </div>
+
   );
+
 }
 
 export default Appointment;
