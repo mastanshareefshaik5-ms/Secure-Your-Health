@@ -3,97 +3,154 @@ import { useState, useEffect } from "react";
 
 function MedicineOrder() {
 
-  const [medicines, setMedicines] = useState([]);
-  const [search, setSearch] = useState("");
+  const [medicine, setMedicine] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [editIndex, setEditIndex] = useState(null);
 
+  // Load data from Local Storage
   useEffect(() => {
-
-    const medicineData = [
-      {
-        id: 1,
-        name: "Paracetamol",
-        price: 50,
-        company: "Cipla",
-        image: "https://via.placeholder.com/200x150?text=Paracetamol"
-      },
-      {
-        id: 2,
-        name: "Dolo 650",
-        price: 40,
-        company: "Micro Labs",
-        image: "https://via.placeholder.com/200x150?text=Dolo+650"
-      },
-      {
-        id: 3,
-        name: "Azithromycin",
-        price: 120,
-        company: "Sun Pharma",
-        image: "https://via.placeholder.com/200x150?text=Azithromycin"
-      },
-      {
-        id: 4,
-        name: "Vitamin C",
-        price: 80,
-        company: "Himalaya",
-        image: "https://via.placeholder.com/200x150?text=Vitamin+C"
-      },
-      {
-        id: 5,
-        name: "Crocin",
-        price: 35,
-        company: "GSK",
-        image: "https://via.placeholder.com/200x150?text=Crocin"
-      }
-    ];
-
-    setMedicines(medicineData);
-
+    const storedOrders = JSON.parse(localStorage.getItem("medicineOrders")) || [];
+    setOrders(storedOrders);
   }, []);
 
-  const filteredMedicines = medicines.filter((medicine) =>
-    medicine.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // Save data to Local Storage
+  useEffect(() => {
+    localStorage.setItem("medicineOrders", JSON.stringify(orders));
+  }, [orders]);
 
-  const addToCart = (medicine) => {
-    alert(`${medicine.name} added to cart successfully.`);
+  // Add or Update Order
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (medicine === "" || quantity === "") {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const newOrder = {
+      medicine,
+      quantity,
+    };
+
+    if (editIndex === null) {
+      // Add
+      setOrders([...orders, newOrder]);
+      alert("Medicine Added Successfully");
+    } else {
+      // Update
+      const updatedOrders = [...orders];
+      updatedOrders[editIndex] = newOrder;
+      setOrders(updatedOrders);
+      setEditIndex(null);
+      alert("Medicine Updated Successfully");
+    }
+
+    setMedicine("");
+    setQuantity("");
+  };
+
+  // Edit
+  const handleEdit = (index) => {
+    setMedicine(orders[index].medicine);
+    setQuantity(orders[index].quantity);
+    setEditIndex(index);
+  };
+
+  // Delete
+  const handleDelete = (index) => {
+
+    if (window.confirm("Delete this medicine?")) {
+
+      const updatedOrders = orders.filter((_, i) => i !== index);
+
+      setOrders(updatedOrders);
+
+    }
+
   };
 
   return (
     <div className="medicine-order-container">
 
-      <h1>💊 Medicine Order</h1>
+      <h1>Medicine Order</h1>
 
-      <input
-        type="text"
-        placeholder="Search Medicine..."
-        className="medicine-search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <form onSubmit={handleSubmit}>
 
-      <div className="medicine-grid">
+        <input
+          type="text"
+          placeholder="Medicine Name"
+          value={medicine}
+          onChange={(e) => setMedicine(e.target.value)}
+        />
 
-        {filteredMedicines.map((medicine) => (
+        <input
+          type="number"
+          placeholder="Quantity"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+        />
 
-          <div className="medicine-card" key={medicine.id}>
+        <button type="submit">
+          {editIndex === null ? "Add Medicine" : "Update Medicine"}
+        </button>
 
-            <img src={medicine.image} alt={medicine.name} />
+      </form>
 
-            <h2>{medicine.name}</h2>
+      <table>
 
-            <p><strong>Company:</strong> {medicine.company}</p>
+        <thead>
 
-            <p><strong>Price:</strong> ₹{medicine.price}</p>
+          <tr>
+            <th>S.No</th>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+          </tr>
 
-            <button onClick={() => addToCart(medicine)}>
-              Add to Cart
-            </button>
+        </thead>
 
-          </div>
+        <tbody>
 
-        ))}
+          {orders.length === 0 ? (
 
-      </div>
+            <tr>
+              <td colSpan="4">No Medicines Ordered</td>
+            </tr>
+
+          ) : (
+
+            orders.map((order, index) => (
+
+              <tr key={index}>
+
+                <td>{index + 1}</td>
+
+                <td>{order.medicine}</td>
+
+                <td>{order.quantity}</td>
+
+                <td>
+
+                  <button onClick={() => handleEdit(index)}>
+                    Edit
+                  </button>
+
+                  <button onClick={() => handleDelete(index)}>
+                    Delete
+                  </button>
+
+                </td>
+
+              </tr>
+
+            ))
+
+          )}
+
+        </tbody>
+
+      </table>
 
     </div>
   );
