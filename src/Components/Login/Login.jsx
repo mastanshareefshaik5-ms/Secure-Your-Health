@@ -1,85 +1,69 @@
 import "./Login.css";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
 
-  const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+
     e.preventDefault();
 
-    if (user.email === "" || user.password === "") {
+    if (email === "" || password === "") {
       alert("Please fill all fields");
       return;
     }
 
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("username", email);
+
     alert("Login Successful");
-    console.log(user);
+
+    navigate("/dashboard");
+
   };
 
   return (
+
     <div className="login-container">
 
-      <div className="login-box">
+      <form className="login-box" onSubmit={handleLogin}>
 
-        <h1>Secure Your Health</h1>
+        <h1>Login</h1>
 
-        <h2>Welcome Back 👋</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e)=>setEmail(e.target.value)}
+        />
 
-        <form onSubmit={handleSubmit}>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e)=>setPassword(e.target.value)}
+        />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Email"
-            value={user.email}
-            onChange={handleChange}
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            value={user.password}
-            onChange={handleChange}
-          />
-
-          <div className="login-options">
-
-            <label>
-              <input type="checkbox" />
-              Remember Me
-            </label>
-
-            <a href="#">Forgot Password?</a>
-
-          </div>
-
-          <button type="submit">
-            Login
-          </button>
-
-        </form>
+        <button type="submit">
+          Login
+        </button>
 
         <p>
           Don't have an account?
           <Link to="/register"> Register</Link>
         </p>
 
-      </div>
+      </form>
 
     </div>
+
   );
+
 }
 
 export default Login;
