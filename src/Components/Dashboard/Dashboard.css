@@ -1,144 +1,376 @@
-.dashboard {
-    padding: 30px;
-    background: #f5f9ff;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
+/* ===========================
+   DASHBOARD
+=========================== */
+
+.dashboard{
+    padding:30px;
+    background:#f5f9ff;
+    min-height:100vh;
 }
 
-/* Dashboard Heading */
-.dashboard h1 {
-    text-align: center;
-    color: #0077cc;
-    font-size: 32px;
-    margin-bottom: 10px;
+/* ===========================
+   HEADER
+=========================== */
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(135deg,#0077cc,#00b4d8);
+    padding:30px;
+    border-radius:18px;
+    color:white;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    margin-bottom:35px;
 }
 
-.dashboard p {
-    text-align: center;
-    color: #555;
-    font-size: 16px;
-    margin-bottom: 30px;
+.dashboard-header h1{
+    font-size:34px;
+    margin-bottom:8px;
 }
 
-/* Cards Container */
-.dashboard-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
+.dashboard-header p{
+    font-size:18px;
 }
 
-/* Individual Cards */
-.dashboard-card {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: 0.3s ease;
-    cursor: pointer;
+.header-right{
+    display:flex;
+    gap:20px;
 }
 
-.dashboard-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+.date,
+.notification{
+
+    background:white;
+    color:#0077cc;
+    padding:12px 18px;
+    border-radius:30px;
+    font-weight:bold;
+    box-shadow:0 5px 10px rgba(0,0,0,.15);
+
 }
 
-/* Card Icons */
-.dashboard-card .icon {
-    font-size: 40px;
-    color: #0077cc;
-    margin-bottom: 15px;
+/* ===========================
+   STATISTICS
+=========================== */
+
+.stats-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+
 }
 
-/* Card Titles */
-.dashboard-card h3 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 20px;
+.stat-card{
+
+    background:white;
+    border-radius:15px;
+    text-align:center;
+    padding:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    transition:.4s;
+
 }
 
-/* Card Numbers */
-.dashboard-card h2 {
-    color: #0077cc;
-    font-size: 35px;
-    margin: 0;
+.stat-card:hover{
+
+    transform:translateY(-8px);
+
 }
 
-/* Quick Actions Section */
-.quick-actions {
-    margin-top: 40px;
+.stat-icon{
+
+    font-size:55px;
+    margin-bottom:15px;
+
 }
 
-.quick-actions h2 {
-    color: #0077cc;
-    margin-bottom: 20px;
+.stat-card h2{
+
+    color:#0077cc;
+    font-size:34px;
+
 }
 
-/* Buttons */
-.action-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+.stat-card h3{
+
+    color:#555;
+    margin-top:10px;
+
 }
 
-.action-buttons button {
-    padding: 12px 25px;
-    border: none;
-    background: #0077cc;
-    color: white;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
+/* ===========================
+   QUICK SERVICES
+=========================== */
+
+.quick-services{
+
+    margin-top:50px;
+
 }
 
-.action-buttons button:hover {
-    background: #005fa3;
+.quick-services h2{
+
+    margin-bottom:20px;
+    color:#0077cc;
+
 }
 
-/* Health Tips */
-.health-tips {
-    background: white;
-    margin-top: 40px;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.service-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+
 }
 
-.health-tips h2 {
-    color: #0077cc;
+.service-card{
+
+    background:white;
+    text-decoration:none;
+    color:#333;
+    text-align:center;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+    transition:.4s;
+
 }
 
-.health-tips ul {
-    padding-left: 20px;
+.service-card:hover{
+
+    background:#0077cc;
+    color:white;
+    transform:translateY(-8px);
+
 }
 
-.health-tips li {
-    margin: 10px 0;
-    color: #555;
+.service-icon{
+
+    font-size:45px;
+    margin-bottom:15px;
+
 }
 
-/* Responsive Design */
+/* ===========================
+   BOTTOM SECTION
+=========================== */
+
+.bottom-section{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+    margin-top:50px;
+
+}
+
+.activity-box,
+.tips-box,
+.emergency-box{
+
+    background:white;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+
+}
+
+.activity-box h2,
+.tips-box h2,
+.emergency-box h2{
+
+    color:#0077cc;
+    margin-bottom:20px;
+
+}
+
+.activity-box p,
+.tips-box p,
+.emergency-box p{
+
+    margin:12px 0;
+    color:#555;
+
+}
+
+/* ===========================
+   ANALYTICS
+=========================== */
+
+.analytics-section{
+
+    margin-top:50px;
+
+}
+
+.analytics-section h2{
+
+    margin-bottom:20px;
+    color:#0077cc;
+
+}
+
+.analytics-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+    gap:25px;
+
+}
+
+.chart-card{
+
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+
+}
+
+.chart-card h3{
+
+    color:#0077cc;
+    margin-bottom:20px;
+
+}
+
+/* ===========================
+   BAR CHART
+=========================== */
+
+.bar-chart{
+
+    height:240px;
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    padding-top:20px;
+
+}
+
+.bar{
+
+    width:38px;
+    background:linear-gradient(to top,#0077cc,#00b4d8);
+    border-radius:10px 10px 0 0;
+    position:relative;
+    transition:.3s;
+
+}
+
+.bar:hover{
+
+    transform:scaleY(1.08);
+
+}
+
+.bar span{
+
+    position:absolute;
+    bottom:-30px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:14px;
+
+}
+
+/* ===========================
+   PROGRESS BAR
+=========================== */
+
+.progress-item{
+
+    margin-bottom:20px;
+
+}
+
+.progress-item p{
+
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+    font-weight:bold;
+
+}
+
+.progress{
+
+    width:100%;
+    height:14px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+
+}
+
+.progress div{
+
+    height:100%;
+    background:linear-gradient(to right,#0077cc,#00b4d8);
+    border-radius:20px;
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:992px){
+
+.dashboard-header{
+
+flex-direction:column;
+text-align:center;
+gap:20px;
+
+}
+
+.header-right{
+
+flex-direction:column;
+
+}
+
+}
+
 @media(max-width:768px){
 
-    .dashboard {
-        padding: 15px;
-    }
+.dashboard{
 
-    .dashboard h1 {
-        font-size: 25px;
-    }
+padding:15px;
 
-    .dashboard-cards {
-        grid-template-columns: 1fr;
-    }
+}
 
-    .action-buttons {
-        flex-direction: column;
-    }
+.dashboard-header h1{
 
-    .action-buttons button {
-        width: 100%;
-    }
+font-size:26px;
+
+}
+
+.stats-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.service-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.analytics-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.bottom-section{
+
+grid-template-columns:1fr;
+
+}
+
 }
