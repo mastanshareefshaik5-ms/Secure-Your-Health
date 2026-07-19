@@ -1,85 +1,180 @@
+import { useEffect, useState } from "react";
+import API from "../../api/api";
 import "./Hospital.css";
 
 function Hospital() {
+  const [hospitals, setHospitals] = useState([]);
+  const [filtered, setFiltered] = useState([]);
 
-  const hospitals = [
-    {
-      name: "Apollo Hospital",
-      location: "Hyderabad",
-      image:
-        "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800",
-    },
-    {
-      name: "Yashoda Hospital",
-      location: "Hyderabad",
-      image:
-        "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=800",
-    },
-    {
-      name: "CARE Hospital",
-      location: "Visakhapatnam",
-      image:
-        "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800",
-    },
-    {
-      name: "AIIMS",
-      location: "New Delhi",
-      image:
-        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800",
-    },
-    {
-      name: "KIMS Hospital",
-      location: "Hyderabad",
-      image:
-        "https://images.unsplash.com/photo-1551076805-e1869033e561?w=800",
-    },
-    {
-      name: "NIMS Hospital",
-      location: "Hyderabad",
-      image:
-        "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800",
-    },
-  ];
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    phone: "",
+  });
+
+  const [editingId, setEditingId] = useState(null);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    getHospitals();
+  }, []);
+
+  useEffect(() => {
+    const result = hospitals.filter((hospital) =>
+      hospital.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFiltered(result);
+  }, [search, hospitals]);
+
+  const getHospitals = async () => {
+    try {
+      const res = await API.get("/hospitals");
+      setHospitals(res.data);
+      setFiltered(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (editingId) {
+        await API.put(`/hospitals/${editingId}`, form);
+      } else {
+        await API.post("/hospitals", form);
+      }
+
+      setForm({
+        name: "",
+        address: "",
+        phone: "",
+      });
+
+      setEditingId(null);
+
+      getHospitals();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const editHospital = (hospital) => {
+    setEditingId(hospital._id);
+
+    setForm({
+      name: hospital.name,
+      address: hospital.address,
+      phone: hospital.phone,
+    });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const deleteHospital = async (id) => {
+    if (!window.confirm("Delete Hospital?")) return;
+
+    try {
+      await API.delete(`/hospitals/${id}`);
+      getHospitals();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <div className="hospital-container">
+    <div className="hospital-page">
 
       <h1 className="hospital-title">
-        Top Multi-Speciality Hospitals
+        Hospital Management
       </h1>
 
-      <p className="hospital-subtitle">
-        Find the best hospitals across India.
-      </p>
+      <form className="hospital-form" onSubmit={handleSubmit}>
+
+        <input
+          name="name"
+          placeholder="Hospital Name"
+          value={form.name}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="address"
+          placeholder="Address"
+          value={form.address}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="phone"
+          placeholder="Phone Number"
+          value={form.phone}
+          onChange={handleChange}
+          required
+        />
+
+        <button>
+          {editingId ? "Update Hospital" : "Add Hospital"}
+        </button>
+
+      </form>
+
+      <input
+        className="search-box"
+        placeholder="Search Hospital..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       <div className="hospital-grid">
 
-        {hospitals.map((hospital, index) => (
+        {filtered.map((hospital) => (
 
-          <div className="hospital-card" key={index}>
+          <div
+            className="hospital-card"
+            key={hospital._id}
+          >
 
-            <img
-              src={hospital.image}
-              alt={hospital.name}
-            />
+            <h3>{hospital.name}</h3>
 
-            <h2>{hospital.name}</h2>
-
-            <p className="location">
-              📍 {hospital.location}
+            <p>
+              <strong>Address :</strong> {hospital.address}
             </p>
 
             <p>
-              Multi-speciality hospital with experienced doctors and modern healthcare facilities.
+              <strong>Phone :</strong> {hospital.phone}
             </p>
 
-            <p className="rating">
-              ⭐ 4.8 / 5
-            </p>
+            <div className="card-buttons">
 
-            <button className="book-btn">
-              Book Appointment
-            </button>
+              <button
+                className="edit-btn"
+                onClick={() => editHospital(hospital)}
+              >
+                Edit
+              </button>
+
+              <button
+                className="delete-btn"
+                onClick={() => deleteHospital(hospital._id)}
+              >
+                Delete
+              </button>
+
+            </div>
 
           </div>
 
