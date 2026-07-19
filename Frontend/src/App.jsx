@@ -1,80 +1,229 @@
-import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
+// Authentication
+import Login from "./Components/Login/Login";
+import Register from "./Components/Register/Register";
+import ProtectedRoute from "./Components/ProtectedRoute";
+
+// Layout
 import Navbar from "./Components/Navbar/Navbar";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Footer from "./Components/Footer/Footer";
 
-import Home from "./Components/Home/Home";
+// Pages
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Hospital from "./Components/Hospital/Hospital";
 import Doctor from "./Components/Doctors/Doctor";
 import Medicine from "./Components/Medicines/Medicine";
-import Ambulance from "./Components/Ambulance/Ambulance";
 import Appointment from "./Components/Appointment/Appointment";
-import HealthTips from "./Components/Healthtips/Healthtips";
-import Contact from "./Components/Contacts/Contact";
-
-import Login from "./Components/Login/Login";
-import Register from "./Components/Register/Register";
-import Profile from "./Components/Profile/Profile";
-
-import BMI from "./Components/BMI/BMI";
-import BloodDonation from "./Components/BloodDonation/BloodDonation";
 import BloodBank from "./Components/BloodBank/BloodBank";
+import BloodDonation from "./Components/BloodDonation/BloodDonation";
+import BMI from "./Components/BMI/BMI";
 import MedicineOrder from "./Components/MedicineOrder/MedicineOrder";
 import Cart from "./Components/Cart/Cart";
 import ChatBot from "./Components/ChatBot/ChatBot";
-import DarkMode from "./Components/DarkMode/DarkMode";
+import Profile from "./Components/Profile/Profile";
+import Contact from "./Components/Contacts/Contact";
+import HealthTips from "./Components/Healthtips/HealthTips";
+
+const Layout = ({ children }) => (
+  <>
+    <Navbar />
+
+    <div
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+      }}
+    >
+      <Sidebar />
+
+      <div
+        style={{
+          flex: 1,
+          marginLeft: "250px",
+          marginTop: "70px",
+          padding: "20px",
+          background: "#f5f7fb",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+
+    <Footer />
+  </>
+);
 
 function App() {
   return (
-    <>
-      <Navbar />
+    <Routes>
 
-      <div className="app-container">
-        <Sidebar />
+      {/* Public Routes */}
 
-        <main className="main-content">
-          <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
-            <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+      <Route path="/register" element={<Register />} />
 
-            <Route path="/profile" element={<Profile />} />
+      {/* Protected Routes */}
 
-            <Route path="/hospitals" element={<Hospital />} />
-            <Route path="/doctors" element={<Doctor />} />
-            <Route path="/medicines" element={<Medicine />} />
-            <Route path="/ambulance" element={<Ambulance />} />
-            <Route path="/appointment" element={<Appointment />} />
-            <Route path="/healthtips" element={<HealthTips />} />
-            <Route path="/contact" element={<Contact />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/bmi" element={<BMI />} />
+      <Route
+        path="/hospitals"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Hospital />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/blooddonation" element={<BloodDonation />} />
-            <Route path="/blooddonation/:id" element={<BloodDonation />} />
+      <Route
+        path="/doctors"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Doctor />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/bloodbank" element={<BloodBank />} />
+      <Route
+        path="/medicines"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Medicine />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/medicineorder" element={<MedicineOrder />} />
+      <Route
+        path="/appointments"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Appointment />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/cart" element={<Cart />} />
+      <Route
+        path="/bloodbank"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <BloodBank />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/chatbot" element={<ChatBot />} />
+      <Route
+        path="/blooddonation"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <BloodDonation />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-            <Route path="/darkmode" element={<DarkMode />} />
+      <Route
+        path="/bmi"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <BMI />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-          </Routes>
-        </main>
-      </div>
+      <Route
+        path="/medicineorder"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <MedicineOrder />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
-      <Footer />
-    </>
+      <Route
+        path="/cart"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Cart />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/chatbot"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <ChatBot />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Profile />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/contact"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Contact />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/healthtips"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <HealthTips />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+    </Routes>
   );
 }
 
