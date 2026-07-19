@@ -11,15 +11,13 @@ function Navbar() {
   const username = sessionStorage.getItem("username");
 
   const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 
-    sessionStorage.clear();
+  sessionStorage.clear();
 
-    alert("Logged Out Successfully");
-
-    navigate("/login");
-
-  };
-
+  navigate("/login");
+ };
   return (
 
     <nav className="navbar">
@@ -34,7 +32,7 @@ function Navbar() {
 
       <ul className="nav-links">
 
-        <li><Link to="/">Home</Link></li>
+        <li><Link to="/dashboard">Home</Link></li>
 
         <li><Link to="/hospitals">Hospitals</Link></li>
 
@@ -42,7 +40,7 @@ function Navbar() {
 
         <li><Link to="/medicines">Medicines</Link></li>
 
-        <li><Link to="/appointment">Appointment</Link></li>
+        <li><Link to="/appointments">Appointment</Link></li>
 
         <li><Link to="/healthtips">Health Tips</Link></li>
 
