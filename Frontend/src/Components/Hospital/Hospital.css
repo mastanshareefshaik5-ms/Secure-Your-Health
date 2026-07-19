@@ -1,85 +1,132 @@
-/* ==========================
-   HOSPITAL PAGE
-========================== */
-
-.hospital-container {
-    width: 100%;
-    padding: 30px;
-    background: #f5f9ff;
+.hospital-page{
+width:100%;
+padding:25px;
 }
 
-.hospital-title {
-    text-align: center;
-    font-size: 40px;
-    color: #0077cc;
-    margin-bottom: 10px;
+.hospital-title{
+font-size:34px;
+font-weight:bold;
+color:#1976d2;
+margin-bottom:25px;
 }
 
-.hospital-subtitle {
-    text-align: center;
-    color: #555;
-    font-size: 18px;
-    margin-bottom: 35px;
+.hospital-form{
+background:#fff;
+padding:25px;
+border-radius:12px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+margin-bottom:30px;
 }
 
-.hospital-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
-    gap: 30px;
+.hospital-form input{
+padding:14px;
+font-size:16px;
+border:1px solid #ddd;
+border-radius:8px;
+outline:none;
 }
 
-.hospital-card {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    transition: .3s;
+.hospital-form input:focus{
+border:1px solid #1976d2;
 }
 
-.hospital-card:hover {
-    transform: translateY(-8px);
+.hospital-form button{
+background:#1976d2;
+color:white;
+border:none;
+border-radius:8px;
+font-size:17px;
+cursor:pointer;
+font-weight:bold;
 }
 
-.hospital-card img {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
+.hospital-form button:hover{
+background:#1259a7;
 }
 
-.hospital-card h2 {
-    padding: 15px;
-    color: #0077cc;
+.search-box{
+width:100%;
+padding:14px;
+font-size:16px;
+border-radius:8px;
+border:1px solid #ccc;
+margin-bottom:30px;
 }
 
-.hospital-card p {
-    padding: 0 15px;
-    color: #555;
-    line-height: 1.6;
+.hospital-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+gap:25px;
 }
 
-.location {
-    color: green;
-    font-weight: bold;
+.hospital-card{
+background:white;
+padding:22px;
+border-radius:12px;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+transition:.3s;
 }
 
-.rating {
-    color: orange;
-    font-weight: bold;
-    padding: 15px;
+.hospital-card:hover{
+transform:translateY(-5px);
 }
 
-.book-btn {
-    width: calc(100% - 30px);
-    margin: 15px;
-    padding: 12px;
-    border: none;
-    background: #0077cc;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 17px;
+.hospital-card h3{
+margin-bottom:15px;
+color:#1565c0;
 }
 
-.book-btn:hover {
-    background: #005fa3;
+.hospital-card p{
+margin:8px 0;
+font-size:16px;
+}
+
+.card-buttons{
+display:flex;
+justify-content:flex-end;
+gap:12px;
+margin-top:20px;
+}
+
+.edit-btn{
+background:#ff9800;
+border:none;
+padding:10px 20px;
+color:white;
+font-weight:bold;
+border-radius:8px;
+cursor:pointer;
+}
+
+.edit-btn:hover{
+background:#ef6c00;
+}
+
+.delete-btn{
+background:#e53935;
+border:none;
+padding:10px 20px;
+color:white;
+font-weight:bold;
+border-radius:8px;
+cursor:pointer;
+}
+
+.delete-btn:hover{
+background:#c62828;
+}
+
+@media(max-width:768px){
+
+.hospital-form{
+grid-template-columns:1fr;
+}
+
+.hospital-grid{
+grid-template-columns:1fr;
+}
+
 }
