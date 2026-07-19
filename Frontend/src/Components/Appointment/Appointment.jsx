@@ -1,80 +1,139 @@
+import { useEffect, useState } from "react";
+import API from "../../api/api";
 import "./Appointment.css";
-import { useState, useEffect } from "react";
 
 function Appointment() {
 
   const [appointments, setAppointments] = useState([]);
+  const [filtered, setFiltered] = useState([]);
 
-  const [formData, setFormData] = useState({
-    patient: "",
-    doctor: "",
+  const [form, setForm] = useState({
+    patientName: "",
+    doctorName: "",
+    hospital: "",
     date: "",
-    time: ""
   });
 
+  const [editingId, setEditingId] = useState(null);
+  const [search, setSearch] = useState("");
+
   useEffect(() => {
-
-    const data = [
-      {
-        patient: "Rahul",
-        doctor: "Dr. Deepika",
-        date: "2026-07-20",
-        time: "10:00 AM"
-      }
-    ];
-
-    setAppointments(data);
-
+    fetchAppointments();
   }, []);
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    setFiltered(
+      appointments.filter((a) =>
+        a.patientName.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, appointments]);
 
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+  const fetchAppointments = async () => {
+    try {
+      const res = await API.get("/appointments");
+      setAppointments(res.data);
+      setFiltered(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      if (editingId) {
+        await API.put(`/appointments/${editingId}`, form);
+      } else {
+        await API.post("/appointments", form);
+      }
+
+      setForm({
+        patientName: "",
+        doctorName: "",
+        hospital: "",
+        date: "",
+      });
+
+      setEditingId(null);
+
+      fetchAppointments();
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const editAppointment = (appointment) => {
+
+    setEditingId(appointment._id);
+
+    setForm({
+      patientName: appointment.patientName,
+      doctorName: appointment.doctorName,
+      hospital: appointment.hospital,
+      date: appointment.date?.substring(0,10),
+    });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
 
   };
 
-  const handleSubmit = (e) => {
+  const deleteAppointment = async (id) => {
 
-    e.preventDefault();
+    if (!window.confirm("Delete Appointment?")) return;
 
-    setAppointments([...appointments, formData]);
+    await API.delete(`/appointments/${id}`);
 
-    setFormData({
-      patient: "",
-      doctor: "",
-      date: "",
-      time: ""
-    });
-
-    alert("Appointment Booked Successfully");
+    fetchAppointments();
 
   };
 
   return (
 
-    <div className="appointment-container">
+    <div className="appointment-page">
 
-      <h1>Book Appointment</h1>
+      <h1 className="appointment-title">
+        Appointment Management
+      </h1>
 
-      <form onSubmit={handleSubmit}>
+      <form
+        className="appointment-form"
+        onSubmit={handleSubmit}
+      >
 
         <input
-          type="text"
-          name="patient"
+          name="patientName"
           placeholder="Patient Name"
-          value={formData.patient}
+          value={form.patientName}
           onChange={handleChange}
           required
         />
 
         <input
-          type="text"
-          name="doctor"
+          name="doctorName"
           placeholder="Doctor Name"
-          value={formData.doctor}
+          value={form.doctorName}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="hospital"
+          placeholder="Hospital Name"
+          value={form.hospital}
           onChange={handleChange}
           required
         />
@@ -82,69 +141,75 @@ function Appointment() {
         <input
           type="date"
           name="date"
-          value={formData.date}
+          value={form.date}
           onChange={handleChange}
           required
         />
 
-        <input
-          type="time"
-          name="time"
-          value={formData.time}
-          onChange={handleChange}
-          required
-        />
-
-        <button>Book Appointment</button>
+        <button>
+          {editingId ? "Update Appointment" : "Book Appointment"}
+        </button>
 
       </form>
 
-      <h2>Booked Appointments</h2>
+      <input
+        className="search-box"
+        placeholder="Search Patient..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
-      <table>
+      <div className="appointment-grid">
 
-        <thead>
+        {filtered.map((appointment) => (
 
-          <tr>
+          <div
+            className="appointment-card"
+            key={appointment._id}
+          >
 
-            <th>Patient</th>
+            <h3>{appointment.patientName}</h3>
 
-            <th>Doctor</th>
+            <p>
+              <strong>Doctor :</strong> {appointment.doctorName}
+            </p>
 
-            <th>Date</th>
+            <p>
+              <strong>Hospital :</strong> {appointment.hospital}
+            </p>
 
-            <th>Time</th>
+            <p>
+              <strong>Date :</strong>{" "}
+              {new Date(appointment.date).toLocaleDateString()}
+            </p>
 
-          </tr>
+            <div className="card-buttons">
 
-        </thead>
+              <button
+                className="edit-btn"
+                onClick={() => editAppointment(appointment)}
+              >
+                Edit
+              </button>
 
-        <tbody>
+              <button
+                className="delete-btn"
+                onClick={() => deleteAppointment(appointment._id)}
+              >
+                Delete
+              </button>
 
-          {appointments.map((item, index) => (
+            </div>
 
-            <tr key={index}>
+          </div>
 
-              <td>{item.patient}</td>
+        ))}
 
-              <td>{item.doctor}</td>
-
-              <td>{item.date}</td>
-
-              <td>{item.time}</td>
-
-            </tr>
-
-          ))}
-
-        </tbody>
-
-      </table>
+      </div>
 
     </div>
 
   );
-
 }
 
 export default Appointment;
