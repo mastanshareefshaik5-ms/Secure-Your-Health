@@ -1,62 +1,92 @@
+import { useState, useEffect } from "react";
 import "./Profile.css";
 
 function Profile() {
+
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+  });
+
+  useEffect(() => {
+
+    const data = JSON.parse(localStorage.getItem("user"));
+
+    if (data) {
+      setUser(data);
+    }
+
+  }, []);
+
+  const handleChange = (e) => {
+
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+
+  };
+
+  const saveProfile = () => {
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(user)
+    );
+
+    alert("Profile Updated Successfully");
+
+  };
+
   return (
-    <div className="profile-container">
+
+    <div className="profile-page">
+
       <div className="profile-card">
 
-        <div className="profile-avatar">
-          👤
-        </div>
+        <div className="profile-image">
 
-        <h1>My Profile</h1>
-
-        <div className="profile-info">
-
-          <div className="info-row">
-            <span className="label">Full Name</span>
-            <span className="value">Shaik Mastan Shareef</span>
-          </div>
-
-          <div className="info-row">
-            <span className="label">Email</span>
-            <span className="value">mastan@gmail.com</span>
-          </div>
-
-          <div className="info-row">
-            <span className="label">Mobile</span>
-            <span className="value">+91 9876543210</span>
-          </div>
-
-          <div className="info-row">
-            <span className="label">Age</span>
-            <span className="value">21 Years</span>
-          </div>
-
-          <div className="info-row">
-            <span className="label">Gender</span>
-            <span className="value">Male</span>
-          </div>
-
-          <div className="info-row">
-            <span className="label">Blood Group</span>
-            <span className="value">O+</span>
-          </div>
-
-          <div className="info-row">
-            <span className="label">Address</span>
-            <span className="value">Guntur, Andhra Pradesh</span>
-          </div>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            alt="profile"
+          />
 
         </div>
 
-        <button className="edit-btn">
-          Edit Profile
-        </button>
+        <h2>{user.name}</h2>
+
+        <p>{user.email}</p>
+
+        <div className="profile-form">
+
+          <label>Name</label>
+
+          <input
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+          />
+
+          <label>Email</label>
+
+          <input
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+          />
+
+          <button onClick={saveProfile}>
+            Save Changes
+          </button>
+
+        </div>
 
       </div>
+
     </div>
+
   );
+
 }
 
 export default Profile;
