@@ -32,7 +32,7 @@ function Navbar() {
 
       <ul className="nav-links">
 
-        <li><Link to="/dashboard">Home</Link></li>
+        <li><Link to="/home">Home</Link></li>
 
         <li><Link to="/hospitals">Hospitals</Link></li>
 
