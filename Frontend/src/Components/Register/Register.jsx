@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../../api/api";
 import "./Register.css";
+import { toast } from "react-toastify";
 
 function Register() {
 
@@ -30,7 +31,7 @@ function Register() {
 
       await API.post("/auth/register", form);
 
-      alert("Registration Successful");
+      toast.success("Registration Successful");
 
       navigate("/login");
 
@@ -45,7 +46,7 @@ function Register() {
 
     <div className="login-container">
 
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="login-box" onSubmit={handleSubmit}>
 
         <h2>Create Account</h2>
 
