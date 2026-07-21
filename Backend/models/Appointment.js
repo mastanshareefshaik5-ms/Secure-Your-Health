@@ -1,25 +1,29 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const appointmentSchema = new mongoose.Schema(
-  {
-    patientName: {
-      type: String,
-      required: true,
-    },
-    doctorName: {
-      type: String,
-      required: true,
-    },
-    date: {
-      type: String,
-      required: true,
-    },
-    time: {
-      type: String,
-      required: true,
-    },
-  },
-  { timestamps: true }
+const appointmentSchema=new mongoose.Schema(
+
+{
+
+patientName:String,
+
+doctorName:String,
+
+hospital:String,
+
+date:String,
+
+time:String,
+
+phone:String,
+
+},
+
+{
+
+timestamps:true,
+
+}
+
 );
 
-module.exports = mongoose.model("Appointment", appointmentSchema);
+export default mongoose.model("Appointment",appointmentSchema);
