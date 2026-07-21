@@ -1,116 +1,102 @@
+import { useEffect, useState } from "react";
 import "./Cart.css";
-import { useState, useEffect } from "react";
 
-function Cart() {
+function Cart(){
 
-  const [cartItems, setCartItems] = useState([]);
+const [cart,setCart]=useState([]);
 
-  useEffect(() => {
+useEffect(()=>{
 
-    const medicines = [
-      {
-        id: 1,
-        name: "Paracetamol",
-        price: 50,
-        quantity: 1
-      },
-      {
-        id: 2,
-        name: "Vitamin C",
-        price: 80,
-        quantity: 2
-      }
-    ];
+setCart(JSON.parse(localStorage.getItem("cart"))||[]);
 
-    setCartItems(medicines);
+},[]);
 
-  }, []);
+const removeItem=(index)=>{
 
-  const increaseQty = (id) => {
-    setCartItems(
-      cartItems.map(item =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
-    );
-  };
+const updated=[...cart];
 
-  const decreaseQty = (id) => {
-    setCartItems(
-      cartItems.map(item =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
+updated.splice(index,1);
 
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
+setCart(updated);
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+localStorage.setItem("cart",JSON.stringify(updated));
 
-  return (
-    <div className="cart-container">
+};
 
-      <h1>🛒 My Cart</h1>
+const total=cart.reduce((sum,item)=>sum+Number(item.price),0);
 
-      {cartItems.length === 0 ? (
-        <h2>Your cart is empty.</h2>
-      ) : (
-        <>
-          {cartItems.map(item => (
-            <div className="cart-card" key={item.id}>
+return(
 
-              <div>
-                <h2>{item.name}</h2>
+<div className="cart-page">
 
-                <p>Price : ₹{item.price}</p>
+<h1>Shopping Cart</h1>
 
-                <p>Quantity : {item.quantity}</p>
-              </div>
+{cart.length===0?
 
-              <div className="buttons">
+<h2>No Medicines Added</h2>
 
-                <button onClick={() => increaseQty(item.id)}>
-                  +
-                </button>
+:
 
-                <button onClick={() => decreaseQty(item.id)}>
-                  -
-                </button>
+<>
 
-                <button
-                  className="remove"
-                  onClick={() => removeItem(item.id)}
-                >
-                  Remove
-                </button>
+<table>
 
-              </div>
+<thead>
 
-            </div>
-          ))}
+<tr>
 
-          <div className="total">
+<th>Name</th>
 
-            <h2>Total : ₹{total}</h2>
+<th>Company</th>
 
-            <button className="checkout">
-              Proceed to Checkout
-            </button>
+<th>Price</th>
 
-          </div>
-        </>
-      )}
+<th>Action</th>
 
-    </div>
-  );
+</tr>
+
+</thead>
+
+<tbody>
+
+{cart.map((item,index)=>(
+
+<tr key={index}>
+
+<td>{item.name}</td>
+
+<td>{item.company}</td>
+
+<td>₹{item.price}</td>
+
+<td>
+
+<button onClick={()=>removeItem(index)}>
+
+Remove
+
+</button>
+
+</td>
+
+</tr>
+
+))}
+
+</tbody>
+
+</table>
+
+<h2>Total : ₹ {total}</h2>
+
+</>
+
+}
+
+</div>
+
+);
+
 }
 
 export default Cart;
