@@ -1,95 +1,71 @@
-import "./BMI.css";
 import { useState } from "react";
+import "./BMI.css";
 
 function BMI() {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  const [bmi, setBMI] = useState("");
+  const [bmi, setBmi] = useState("");
   const [status, setStatus] = useState("");
-  const [advice, setAdvice] = useState("");
 
-  const calculateBMI = () => {
-    if (height === "" || weight === "") {
-      alert("Please enter both height and weight.");
-      return;
-    }
+  const calculateBMI = (e) => {
+    e.preventDefault();
 
-    const h = height / 100;
-    const bmiValue = (weight / (h * h)).toFixed(1);
+    const h = Number(height) / 100;
+    const w = Number(weight);
 
-    setBMI(bmiValue);
+    if (!h || !w) return;
 
-    if (bmiValue < 18.5) {
-      setStatus("Underweight");
-      setAdvice("Increase your calorie intake and consult a healthcare professional if needed.");
-    } else if (bmiValue >= 18.5 && bmiValue < 25) {
-      setStatus("Normal Weight");
-      setAdvice("Great! Maintain a balanced diet and exercise regularly.");
-    } else if (bmiValue >= 25 && bmiValue < 30) {
-      setStatus("Overweight");
-      setAdvice("Exercise regularly and reduce high-calorie foods.");
-    } else {
-      setStatus("Obese");
-      setAdvice("Consult a doctor or nutritionist for a healthy weight-loss plan.");
-    }
-  };
+    const result = (w / (h * h)).toFixed(2);
 
-  const resetFields = () => {
-    setHeight("");
-    setWeight("");
-    setBMI("");
-    setStatus("");
-    setAdvice("");
+    setBmi(result);
+
+    if (result < 18.5) setStatus("Underweight");
+    else if (result < 25) setStatus("Normal");
+    else if (result < 30) setStatus("Overweight");
+    else setStatus("Obese");
   };
 
   return (
     <div className="bmi-container">
+
       <div className="bmi-card">
 
-        <h1>🩺 BMI Calculator</h1>
-        <p>Calculate your Body Mass Index</p>
+        <h2>BMI Calculator</h2>
 
-        <div className="input-group">
-          <label>Height (cm)</label>
+        <form onSubmit={calculateBMI}>
+
           <input
             type="number"
-            placeholder="Enter Height"
+            placeholder="Height (cm)"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
+            required
           />
-        </div>
 
-        <div className="input-group">
-          <label>Weight (kg)</label>
           <input
             type="number"
-            placeholder="Enter Weight"
+            placeholder="Weight (kg)"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
+            required
           />
-        </div>
 
-        <div className="button-group">
-          <button onClick={calculateBMI} className="calculate-btn">
-            Calculate BMI
-          </button>
+          <button>Calculate BMI</button>
 
-          <button onClick={resetFields} className="reset-btn">
-            Reset
-          </button>
-        </div>
+        </form>
 
         {bmi && (
-          <div className="result-box">
-            <h2>Your BMI: {bmi}</h2>
+          <div className="result">
 
-            <h3>Status: {status}</h3>
+            <h3>Your BMI : {bmi}</h3>
 
-            <p>{advice}</p>
+            <p>Status : {status}</p>
+
           </div>
         )}
 
       </div>
+
     </div>
   );
 }
