@@ -1,132 +1,244 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
 .hospital-page{
-width:100%;
-padding:25px;
+padding:30px;
+background:#f5f7fb;
+min-height:100vh;
+}
+
+.page-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+flex-wrap:wrap;
+gap:15px;
 }
 
 .hospital-title{
-font-size:34px;
-font-weight:bold;
-color:#1976d2;
-margin-bottom:25px;
+font-size:32px;
+font-weight:700;
+color:#0d6efd;
+}
+
+.pdf-btn{
+padding:12px 25px;
+border:none;
+background:#dc3545;
+color:#fff;
+border-radius:8px;
+cursor:pointer;
+font-size:15px;
+font-weight:600;
+transition:.3s;
+}
+
+.pdf-btn:hover{
+background:#bb2d3b;
+transform:translateY(-2px);
 }
 
 .hospital-form{
 background:#fff;
 padding:25px;
-border-radius:12px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
 display:grid;
-grid-template-columns:repeat(2,1fr);
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-margin-bottom:30px;
+margin-bottom:25px;
 }
 
 .hospital-form input{
 padding:14px;
-font-size:16px;
 border:1px solid #ddd;
 border-radius:8px;
-outline:none;
+font-size:15px;
+transition:.3s;
 }
 
 .hospital-form input:focus{
-border:1px solid #1976d2;
+outline:none;
+border-color:#0d6efd;
+box-shadow:0 0 5px rgba(13,110,253,.3);
 }
 
-.hospital-form button{
-background:#1976d2;
-color:white;
+.submit-btn{
+background:#0d6efd;
+color:#fff;
 border:none;
 border-radius:8px;
-font-size:17px;
+padding:14px;
+font-size:16px;
+font-weight:600;
 cursor:pointer;
-font-weight:bold;
+transition:.3s;
 }
 
-.hospital-form button:hover{
-background:#1259a7;
+.submit-btn:hover{
+background:#084dbf;
 }
 
 .search-box{
 width:100%;
-padding:14px;
+padding:15px;
+border-radius:10px;
+border:1px solid #ddd;
+margin-bottom:25px;
 font-size:16px;
-border-radius:8px;
-border:1px solid #ccc;
-margin-bottom:30px;
+background:#fff;
+}
+
+.search-box:focus{
+outline:none;
+border-color:#0d6efd;
 }
 
 .hospital-grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
 gap:25px;
 }
 
 .hospital-card{
-background:white;
+background:#fff;
 padding:22px;
-border-radius:12px;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
+border-radius:15px;
+box-shadow:0 10px 20px rgba(0,0,0,.08);
 transition:.3s;
+border-left:5px solid #0d6efd;
 }
 
 .hospital-card:hover{
 transform:translateY(-5px);
+box-shadow:0 15px 25px rgba(0,0,0,.15);
 }
 
 .hospital-card h3{
+color:#0d6efd;
 margin-bottom:15px;
-color:#1565c0;
+font-size:22px;
 }
 
 .hospital-card p{
-margin:8px 0;
-font-size:16px;
+margin:10px 0;
+color:#555;
+line-height:1.6;
 }
 
 .card-buttons{
 display:flex;
-justify-content:flex-end;
-gap:12px;
+justify-content:space-between;
+gap:10px;
 margin-top:20px;
 }
 
 .edit-btn{
-background:#ff9800;
+flex:1;
+padding:11px;
 border:none;
-padding:10px 20px;
-color:white;
-font-weight:bold;
+background:#ffc107;
+color:#000;
 border-radius:8px;
 cursor:pointer;
+font-weight:600;
+transition:.3s;
 }
 
 .edit-btn:hover{
-background:#ef6c00;
+background:#e0a800;
 }
 
 .delete-btn{
-background:#e53935;
+flex:1;
+padding:11px;
 border:none;
-padding:10px 20px;
-color:white;
-font-weight:bold;
+background:#dc3545;
+color:#fff;
 border-radius:8px;
 cursor:pointer;
+font-weight:600;
+transition:.3s;
 }
 
 .delete-btn:hover{
-background:#c62828;
+background:#bb2d3b;
+}
+
+.empty-data{
+grid-column:1/-1;
+text-align:center;
+padding:60px;
+background:#fff;
+border-radius:15px;
+font-size:20px;
+color:#777;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.pagination{
+display:flex;
+justify-content:center;
+align-items:center;
+list-style:none;
+margin-top:35px;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.page-item{
+cursor:pointer;
+}
+
+.page-link{
+display:block;
+padding:10px 16px;
+border-radius:8px;
+background:#fff;
+border:1px solid #ddd;
+color:#0d6efd;
+font-weight:600;
+transition:.3s;
+}
+
+.page-link:hover{
+background:#0d6efd;
+color:#fff;
+}
+
+.active .page-link{
+background:#0d6efd;
+color:#fff;
+border-color:#0d6efd;
 }
 
 @media(max-width:768px){
+
+.page-header{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.hospital-title{
+font-size:26px;
+}
 
 .hospital-form{
 grid-template-columns:1fr;
 }
 
-.hospital-grid{
-grid-template-columns:1fr;
+.card-buttons{
+flex-direction:column;
+}
+
+.edit-btn,
+.delete-btn{
+width:100%;
 }
 
 }
