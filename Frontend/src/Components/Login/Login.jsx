@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../../api/api";
 import "./Login.css";
+import { toast } from "react-toastify";
 
 function Login() {
 
@@ -20,7 +21,6 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
@@ -28,23 +28,18 @@ function Login() {
       const res = await API.post("/auth/login", form);
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(res.data.user)
-      );
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("username", res.data.user.name);
 
-      alert("Login Successful");
+      toast.success("Login Successful");
 
-      console.log("Before Navigate");
-      navigate("/dashboard");
-      console.log("After Navigate");
+      navigate("/home");
 
     } catch (err) {
 
-      alert(err.response?.data?.message || "Login Failed");
+      toast.error(err.response?.data?.message || "Login Failed");
 
     }
   };
@@ -53,14 +48,19 @@ function Login() {
 
     <div className="login-container">
 
-      <form className="login-form" onSubmit={handleSubmit}>
+      <div className="overlay"></div>
+
+      <form className="login-box" onSubmit={handleSubmit}>
+
+        <h1>🏥</h1>
 
         <h2>Secure Your Health</h2>
 
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Email Address"
+          value={form.email}
           onChange={handleChange}
           required
         />
@@ -69,6 +69,7 @@ function Login() {
           type="password"
           name="password"
           placeholder="Password"
+          value={form.password}
           onChange={handleChange}
           required
         />
@@ -78,6 +79,7 @@ function Login() {
         </button>
 
         <p>
+
           Don't have an account?
 
           <Link to="/register">
