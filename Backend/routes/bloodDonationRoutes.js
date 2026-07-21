@@ -1,21 +1,41 @@
-// Backend/routes/bloodDonationRoutes.js
+import express from "express";
+import BloodDonation from "../models/BloodDonation.js";
+import protect from "../middleware/authMiddleware.js";
 
-const express = require("express");
 const router = express.Router();
 
-const {
-  getAll,
-  create,
-  update,
-  remove,
-} = require("../controllers/bloodDonationController");
+router.get("/", protect, async (req, res) => {
 
-router.get("/", getAll);
+  res.json(await BloodDonation.find());
 
-router.post("/", create);
+});
 
-router.put("/:id", update);
+router.post("/", protect, async (req, res) => {
 
-router.delete("/:id", remove);
+  res.json(await BloodDonation.create(req.body));
 
-module.exports = router;
+});
+
+router.put("/:id", protect, async (req, res) => {
+
+  res.json(
+    await BloodDonation.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    )
+  );
+
+});
+
+router.delete("/:id", protect, async (req, res) => {
+
+  await BloodDonation.findByIdAndDelete(req.params.id);
+
+  res.json({
+    message: "Blood Donation Deleted",
+  });
+
+});
+
+export default router;
