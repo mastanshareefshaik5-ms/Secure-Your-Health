@@ -1,16 +1,24 @@
-const express = require("express");
+import express from "express";
+import Hospital from "../models/Hospital.js";
+import protect from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
-const {
-  getHospitals,
-  createHospital,
-  updateHospital,
-  deleteHospital,
-} = require("../controllers/hospitalController");
+router.get("/", protect, async (req, res) => {
+  res.json(await Hospital.find());
+});
 
-router.get("/", getHospitals);
-router.post("/", createHospital);
-router.put("/:id", updateHospital);
-router.delete("/:id", deleteHospital);
+router.post("/", protect, async (req, res) => {
+  res.json(await Hospital.create(req.body));
+});
 
-module.exports = router;
+router.put("/:id", protect, async (req, res) => {
+  res.json(await Hospital.findByIdAndUpdate(req.params.id, req.body, { new: true }));
+});
+
+router.delete("/:id", protect, async (req, res) => {
+  await Hospital.findByIdAndDelete(req.params.id);
+  res.json({ message: "Hospital Deleted" });
+});
+
+export default router;
