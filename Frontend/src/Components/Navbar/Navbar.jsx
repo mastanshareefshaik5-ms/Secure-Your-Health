@@ -1,85 +1,117 @@
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Navbar.css";
-import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../Images/Logo.png";
 
 function Navbar() {
 
   const navigate = useNavigate();
 
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  const location = useLocation();
 
-  const username = sessionStorage.getItem("username");
+  const logout = () => {
 
-  const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+    localStorage.removeItem("token");
 
-  sessionStorage.clear();
+    localStorage.removeItem("user");
 
-  navigate("/login");
- };
+    sessionStorage.clear();
+
+    navigate("/login");
+
+  };
+
   return (
 
     <nav className="navbar">
 
-      <div className="logo-section">
+      <div className="navbar-logo">
 
-        <img src={Logo} alt="Logo" className="logo" />
+        <h2>
 
-        <h2>Secure Your Health</h2>
+          🏥 Secure Your Health
+
+        </h2>
 
       </div>
 
-      <ul className="nav-links">
+      <ul className="navbar-links">
 
-        <li><Link to="/home">Home</Link></li>
+        <li>
 
-        <li><Link to="/hospitals">Hospitals</Link></li>
+          <Link
 
-        <li><Link to="/doctors">Doctors</Link></li>
+            className={location.pathname==="/home"?"active":""}
 
-        <li><Link to="/medicines">Medicines</Link></li>
+            to="/home"
 
-        <li><Link to="/appointments">Appointment</Link></li>
+          >
 
-        <li><Link to="/healthtips">Health Tips</Link></li>
-
-        <li><Link to="/contact">Contact</Link></li>
-
-      </ul>
-
-      <div className="profile-section">
-
-        {isLoggedIn ? (
-
-          <>
-
-            <span className="user-name">
-
-              👋 {username}
-
-            </span>
-
-            <button
-              className="logout-btn"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-
-          </>
-
-        ) : (
-
-          <Link to="/login" className="profile-btn">
-
-            Login
+            Home
 
           </Link>
 
-        )}
+        </li>
 
-      </div>
+        <li>
+
+          <Link
+
+            className={location.pathname==="/dashboard"?"active":""}
+
+            to="/dashboard"
+
+          >
+
+            Dashboard
+
+          </Link>
+
+        </li>
+
+        <li>
+
+          <Link
+
+            className={location.pathname==="/profile"?"active":""}
+
+            to="/profile"
+
+          >
+
+            Profile
+
+          </Link>
+
+        </li>
+
+        <li>
+
+          <Link
+
+            className={location.pathname==="/contact"?"active":""}
+
+            to="/contact"
+
+          >
+
+            Contact
+
+          </Link>
+
+        </li>
+
+      </ul>
+
+      <button
+
+        className="logout-btn"
+
+        onClick={logout}
+
+      >
+
+        Logout
+
+      </button>
 
     </nav>
 
