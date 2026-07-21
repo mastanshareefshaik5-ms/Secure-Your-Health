@@ -1,264 +1,346 @@
+import { useEffect, useState } from "react";
+import API from "../../api/api";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+  BarElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+import {
+  Line,
+  Doughnut,
+} from "react-chartjs-2";
+
 import "./Dashboard.css";
-import { Link } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  ArcElement,
+  BarElement,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
-  const stats = [
-    { title: "Hospitals", value: "120", icon: "🏥" },
-    { title: "Doctors", value: "250", icon: "👨‍⚕️" },
-    { title: "Appointments", value: "35", icon: "📅" },
-    { title: "Medicines", value: "500", icon: "💊" },
-    { title: "Blood Banks", value: "18", icon: "🩸" },
-    { title: "Blood Donors", value: "1200", icon: "❤️" },
-    { title: "Medicine Orders", value: "45", icon: "🛒" },
-    { title: "Patients", value: "3500", icon: "👥" },
-  ];
 
-  const services = [
-    { title: "BMI Calculator", icon: "🩺", path: "/bmi" },
-    { title: "Blood Donation", icon: "❤️", path: "/blooddonation" },
-    { title: "Blood Bank", icon: "🏥", path: "/bloodbank" },
-    { title: "Medicine Order", icon: "💊", path: "/medicineorder" },
-    { title: "Cart", icon: "🛒", path: "/cart" },
-    { title: "AI ChatBot", icon: "🤖", path: "/chatbot" },
-    { title: "Dark Mode", icon: "🌙", path: "/darkmode" },
-    { title: "Profile", icon: "👤", path: "/profile" },
-  ];
+  const user =
+    JSON.parse(localStorage.getItem("user")) || {};
 
-  const activities = [
-    "Appointment booked with Dr. Deepika",
-    "Medicine order delivered successfully",
-    "Blood donation request approved",
-    "New hospital added to the portal",
-  ];
+  const [stats, setStats] = useState({
 
-  const tips = [
-    "Drink at least 3 litres of water daily.",
-    "Exercise for 30 minutes every day.",
-    "Eat healthy fruits and vegetables.",
-    "Sleep for 7–8 hours every night.",
-  ];
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    hospitals:0,
+    doctors:0,
+    medicines:0,
+    appointments:0,
 
-if(!isLoggedIn){
+  });
 
-    return <Navigate to="/login" />;
+  useEffect(()=>{
 
-}
+    loadDashboard();
 
-  return (
+  },[]);
+
+  const loadDashboard=async()=>{
+
+    try{
+
+      const hospital=await API.get("/hospitals");
+      const doctor=await API.get("/doctors");
+      const medicine=await API.get("/medicines");
+      const appointment=await API.get("/appointments");
+
+      setStats({
+
+        hospitals:hospital.data.length,
+        doctors:doctor.data.length,
+        medicines:medicine.data.length,
+        appointments:appointment.data.length,
+
+      });
+
+    }
+
+    catch(err){
+
+      console.log(err);
+
+    }
+
+  };
+
+  const lineData={
+
+    labels:[
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun"
+    ],
+
+    datasets:[
+
+      {
+
+        label:"Appointments",
+
+        data:[
+          5,
+          12,
+          9,
+          16,
+          20,
+          stats.appointments
+        ],
+
+        borderColor:"#0d6efd",
+
+        backgroundColor:"rgba(13,110,253,.2)",
+
+        tension:.4,
+
+        fill:true,
+
+      }
+
+    ]
+
+  };
+
+  const pieData={
+
+    labels:[
+      "Hospitals",
+      "Doctors",
+      "Medicines",
+      "Appointments"
+    ],
+
+    datasets:[
+
+      {
+
+        data:[
+
+          stats.hospitals,
+          stats.doctors,
+          stats.medicines,
+          stats.appointments,
+
+        ],
+
+        backgroundColor:[
+
+          "#0d6efd",
+          "#198754",
+          "#ffc107",
+          "#dc3545",
+
+        ],
+
+      }
+
+    ]
+
+  };
+    return (
+
     <div className="dashboard">
-
-      {/* Header */}
 
       <div className="dashboard-header">
 
         <div>
-          <h1>🏥 Secure Your Health Dashboard</h1>
-          <p>Welcome to your Healthcare Management Portal</p>
-        </div>
 
-        <div className="header-right">
+          <h1>
+            Welcome,
+            {" "}
+            {user?.name || "Admin"} 👋
+          </h1>
 
-          <div className="date">
-            📅 {new Date().toLocaleDateString()}
-          </div>
-
-          <div className="notification">
-            🔔 3 Notifications
-          </div>
+          <p>
+            Secure Your Health Management Dashboard
+          </p>
 
         </div>
 
       </div>
-
-      {/* Statistics */}
 
       <div className="stats-grid">
 
-        {stats.map((item, index) => (
+        <div className="stat-card hospitals">
 
-          <div className="stat-card" key={index}>
+          <h3>🏥 Hospitals</h3>
 
-            <div className="stat-icon">
-              {item.icon}
-            </div>
+          <h2>{stats.hospitals}</h2>
 
-            <h2>{item.value}</h2>
+          <span>Total Registered Hospitals</span>
 
-            <h3>{item.title}</h3>
+        </div>
 
-          </div>
+        <div className="stat-card doctors">
 
-        ))}
+          <h3>👨‍⚕️ Doctors</h3>
 
-      </div>
+          <h2>{stats.doctors}</h2>
 
-      {/* Quick Services */}
+          <span>Total Doctors</span>
 
-      <div className="quick-services">
+        </div>
 
-        <h2>🚀 Quick Services</h2>
+        <div className="stat-card medicines">
 
-        <div className="service-grid">
+          <h3>💊 Medicines</h3>
 
-          {services.map((service, index) => (
+          <h2>{stats.medicines}</h2>
 
-            <Link
-              key={index}
-              to={service.path}
-              className="service-card"
-            >
+          <span>Available Medicines</span>
 
-              <div className="service-icon">
+        </div>
 
-                {service.icon}
+        <div className="stat-card appointments">
 
-              </div>
+          <h3>📅 Appointments</h3>
 
-              <h3>{service.title}</h3>
+          <h2>{stats.appointments}</h2>
 
-            </Link>
-
-          ))}
+          <span>Total Bookings</span>
 
         </div>
 
       </div>
 
-      {/* Bottom Section */}
+      <div className="charts-container">
+
+        <div className="chart-box">
+
+          <h2>
+            Monthly Appointments
+          </h2>
+
+          <Line
+            data={lineData}
+          />
+
+        </div>
+
+        <div className="chart-box">
+
+          <h2>
+            Overall Distribution
+          </h2>
+
+          <Doughnut
+            data={pieData}
+          />
+
+        </div>
+
+      </div>
 
       <div className="bottom-section">
 
-        <div className="activity-box">
+        <div className="activity">
 
-          <h2>📋 Recent Activity</h2>
+          <h2>
+            Recent Activity
+          </h2>
 
-          {activities.map((item, index) => (
+          <table>
 
-            <p key={index}>✅ {item}</p>
+            <thead>
 
-          ))}
+              <tr>
+
+                <th>Activity</th>
+
+                <th>Status</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+
+                <td>Hospital Added</td>
+
+                <td>✅ Completed</td>
+
+              </tr>
+
+              <tr>
+
+                <td>Doctor Registered</td>
+
+                <td>✅ Completed</td>
+
+              </tr>
+
+              <tr>
+
+                <td>Medicine Updated</td>
+
+                <td>✅ Completed</td>
+
+              </tr>
+
+              <tr>
+
+                <td>Appointment Booked</td>
+
+                <td>✅ Completed</td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
 
         </div>
 
-        <div className="tips-box">
+        <div className="quick-actions">
 
-          <h2>❤️ Daily Health Tips</h2>
+          <h2>
+            Quick Actions
+          </h2>
 
-          {tips.map((tip, index) => (
+          <button>
+            Add Hospital
+          </button>
 
-            <p key={index}>✔ {tip}</p>
+          <button>
+            Add Doctor
+          </button>
 
-          ))}
+          <button>
+            Add Medicine
+          </button>
 
-        </div>
-
-        <div className="emergency-box">
-
-          <h2>🚑 Emergency Contacts</h2>
-
-          <p>🚑 Ambulance : <strong>108</strong></p>
-
-          <p>👮 Police : <strong>100</strong></p>
-
-          <p>🔥 Fire : <strong>101</strong></p>
-
-          <p>☎ Hospital Helpline : <strong>1800-500-500</strong></p>
-
-        </div>
-
-      </div>
-
-      {/* Analytics */}
-
-      <div className="analytics-section">
-
-        <h2>📊 Healthcare Analytics</h2>
-
-        <div className="analytics-grid">
-
-          {/* Bar Chart */}
-
-          <div className="chart-card">
-
-            <h3>Monthly Appointments</h3>
-
-            <div className="bar-chart">
-
-              <div className="bar" style={{ height: "60%" }}><span>Jan</span></div>
-
-              <div className="bar" style={{ height: "80%" }}><span>Feb</span></div>
-
-              <div className="bar" style={{ height: "50%" }}><span>Mar</span></div>
-
-              <div className="bar" style={{ height: "90%" }}><span>Apr</span></div>
-
-              <div className="bar" style={{ height: "75%" }}><span>May</span></div>
-
-              <div className="bar" style={{ height: "100%" }}><span>Jun</span></div>
-
-            </div>
-
-          </div>
-
-          {/* Blood Availability */}
-
-          <div className="chart-card">
-
-            <h3>Blood Group Availability</h3>
-
-            <div className="progress-item">
-              <p>A+ <span>90%</span></p>
-              <div className="progress"><div style={{ width: "90%" }}></div></div>
-            </div>
-
-            <div className="progress-item">
-              <p>B+ <span>70%</span></p>
-              <div className="progress"><div style={{ width: "70%" }}></div></div>
-            </div>
-
-            <div className="progress-item">
-              <p>O+ <span>95%</span></p>
-              <div className="progress"><div style={{ width: "95%" }}></div></div>
-            </div>
-
-            <div className="progress-item">
-              <p>AB+ <span>45%</span></p>
-              <div className="progress"><div style={{ width: "45%" }}></div></div>
-            </div>
-
-          </div>
-
-          {/* Medicine Orders */}
-
-          <div className="chart-card">
-
-            <h3>Medicine Orders</h3>
-
-            <div className="progress-item">
-              <p>Completed <span>80%</span></p>
-              <div className="progress"><div style={{ width: "80%" }}></div></div>
-            </div>
-
-            <div className="progress-item">
-              <p>Pending <span>15%</span></p>
-              <div className="progress"><div style={{ width: "15%" }}></div></div>
-            </div>
-
-            <div className="progress-item">
-              <p>Cancelled <span>5%</span></p>
-              <div className="progress"><div style={{ width: "5%" }}></div></div>
-            </div>
-
-          </div>
+          <button>
+            Book Appointment
+          </button>
 
         </div>
 
       </div>
 
     </div>
+
   );
+
 }
 
 export default Dashboard;
