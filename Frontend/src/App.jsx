@@ -11,6 +11,7 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import Footer from "./Components/Footer/Footer";
 
 // Pages
+import Home from "./Components/Home/Home";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Hospital from "./Components/Hospital/Hospital";
 import Doctor from "./Components/Doctors/Doctor";
@@ -34,21 +35,22 @@ const Layout = ({ children }) => (
       style={{
         display: "flex",
         minHeight: "100vh",
+        background: "#f4f8fb",
       }}
     >
       <Sidebar />
 
-      <div
+      <main
         style={{
           flex: 1,
           marginLeft: "250px",
           marginTop: "70px",
-          padding: "20px",
-          background: "#f5f7fb",
+          padding: "30px",
+          minHeight: "calc(100vh - 70px)",
         }}
       >
         {children}
-      </div>
+      </main>
     </div>
 
     <Footer />
@@ -68,6 +70,17 @@ function App() {
       <Route path="/register" element={<Register />} />
 
       {/* Protected Routes */}
+
+      <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Home />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/dashboard"
@@ -222,6 +235,8 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="*" element={<Navigate to="/home" replace />} />
 
     </Routes>
   );
