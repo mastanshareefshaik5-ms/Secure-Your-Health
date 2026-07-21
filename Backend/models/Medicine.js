@@ -1,21 +1,29 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const medicineSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    company: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-  },
-  { timestamps: true }
+const medicineSchema=new mongoose.Schema(
+
+{
+
+name:String,
+
+company:String,
+
+price:Number,
+
+stock:Number,
+
+description:String,
+
+image:String,
+
+},
+
+{
+
+timestamps:true,
+
+}
+
 );
 
-module.exports = mongoose.model("Medicine", medicineSchema);
+export default mongoose.model("Medicine",medicineSchema);
