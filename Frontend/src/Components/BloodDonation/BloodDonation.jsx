@@ -1,175 +1,196 @@
+// BloodDonation.jsx
+
+import { useEffect, useState } from "react";
+import API from "../../api/api";
 import "./BloodDonation.css";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 
 function BloodDonation() {
-  const { id } = useParams();
 
-  const [donor, setDonor] = useState({
-    name: "",
-    age: "",
-    gender: "",
+  const [donors, setDonors] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+
+  const [form, setForm] = useState({
+    donorName: "",
     bloodGroup: "",
-    mobile: "",
-    email: "",
+    phone: "",
     city: "",
-    lastDonation: "",
   });
 
-  useEffect(() => {
-    if (id) {
-      console.log("Viewing Donor ID:", id);
+  const [editingId, setEditingId] = useState(null);
+  const [search, setSearch] = useState("");
 
-      // Dummy data (Later replace with MongoDB API)
-      setDonor({
-        name: "Rahul Kumar",
-        age: "24",
-        gender: "Male",
-        bloodGroup: "O+",
-        mobile: "9876543210",
-        email: "rahul@gmail.com",
-        city: "Hyderabad",
-        lastDonation: "2026-01-15",
-      });
-    }
-  }, [id]);
+  useEffect(() => {
+    fetchDonors();
+  }, []);
+
+  useEffect(() => {
+    setFiltered(
+      donors.filter((d) =>
+        d.donorName.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, donors]);
+
+  const fetchDonors = async () => {
+    const res = await API.get("/blooddonations");
+    setDonors(res.data);
+    setFiltered(res.data);
+  };
 
   const handleChange = (e) => {
-    setDonor({
-      ...donor,
+    setForm({
+      ...form,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    if (
-      donor.name === "" ||
-      donor.age === "" ||
-      donor.gender === "" ||
-      donor.bloodGroup === "" ||
-      donor.mobile === "" ||
-      donor.email === "" ||
-      donor.city === ""
-    ) {
-      alert("Please fill all required fields.");
-      return;
+    if (editingId) {
+      await API.put(`/blooddonations/${editingId}`, form);
+    } else {
+      await API.post("/blooddonations", form);
     }
 
-    alert("Blood Donor Registered Successfully!");
-
-    console.log(donor);
-
-    setDonor({
-      name: "",
-      age: "",
-      gender: "",
-      bloodGroup: "",
-      mobile: "",
-      email: "",
-      city: "",
-      lastDonation: "",
+    setForm({
+      donorName:"",
+      bloodGroup:"",
+      phone:"",
+      city:"",
     });
+
+    setEditingId(null);
+
+    fetchDonors();
+
   };
 
-  return (
-    <div className="blood-container">
+  const editDonor=(d)=>{
 
-      <div className="blood-card">
+    setEditingId(d._id);
 
-        <h1>🩸 Blood Donation Registration</h1>
+    setForm({
+      donorName:d.donorName,
+      bloodGroup:d.bloodGroup,
+      phone:d.phone,
+      city:d.city,
+    });
 
-        <form onSubmit={handleSubmit}>
+    window.scrollTo({top:0,behavior:"smooth"});
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={donor.name}
-            onChange={handleChange}
-          />
+  };
 
-          <input
-            type="number"
-            name="age"
-            placeholder="Age"
-            value={donor.age}
-            onChange={handleChange}
-          />
+  const deleteDonor=async(id)=>{
 
-          <select
-            name="gender"
-            value={donor.gender}
-            onChange={handleChange}
-          >
-            <option value="">Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
+    if(!window.confirm("Delete Donor?")) return;
 
-          <select
-            name="bloodGroup"
-            value={donor.bloodGroup}
-            onChange={handleChange}
-          >
-            <option value="">Blood Group</option>
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-            <option>O+</option>
-            <option>O-</option>
-          </select>
+    await API.delete(`/blooddonations/${id}`);
 
-          <input
-            type="text"
-            name="mobile"
-            placeholder="Mobile Number"
-            value={donor.mobile}
-            onChange={handleChange}
-          />
+    fetchDonors();
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            value={donor.email}
-            onChange={handleChange}
-          />
+  };
 
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            value={donor.city}
-            onChange={handleChange}
-          />
+  return(
 
-          <label className="date-label">
-            Last Blood Donation Date
-          </label>
+<div className="donation-page">
 
-          <input
-            type="date"
-            name="lastDonation"
-            value={donor.lastDonation}
-            onChange={handleChange}
-          />
+<h1 className="donation-title">
 
-          <button type="submit">
-            Register as Donor
-          </button>
+Blood Donation Management
 
-        </form>
+</h1>
 
-      </div>
+<form className="donation-form" onSubmit={handleSubmit}>
 
-    </div>
-  );
+<input
+name="donorName"
+placeholder="Donor Name"
+value={form.donorName}
+onChange={handleChange}
+required
+/>
+
+<input
+name="bloodGroup"
+placeholder="Blood Group"
+value={form.bloodGroup}
+onChange={handleChange}
+required
+/>
+
+<input
+name="phone"
+placeholder="Phone"
+value={form.phone}
+onChange={handleChange}
+required
+/>
+
+<input
+name="city"
+placeholder="City"
+value={form.city}
+onChange={handleChange}
+required
+/>
+
+<button>
+
+{editingId?"Update Donor":"Add Donor"}
+
+</button>
+
+</form>
+
+<input
+className="search-box"
+placeholder="Search Donor..."
+value={search}
+onChange={(e)=>setSearch(e.target.value)}
+/>
+
+<div className="donation-grid">
+
+{filtered.map((d)=>(
+
+<div className="donation-card" key={d._id}>
+
+<h3>{d.donorName}</h3>
+
+<p><strong>Blood :</strong> {d.bloodGroup}</p>
+
+<p><strong>Phone :</strong> {d.phone}</p>
+
+<p><strong>City :</strong> {d.city}</p>
+
+<div className="card-buttons">
+
+<button className="edit-btn" onClick={()=>editDonor(d)}>
+
+Edit
+
+</button>
+
+<button className="delete-btn" onClick={()=>deleteDonor(d._id)}>
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+);
+
 }
 
 export default BloodDonation;
