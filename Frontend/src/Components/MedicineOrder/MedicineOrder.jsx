@@ -1,159 +1,71 @@
+import { useEffect, useState } from "react";
+import API from "../../api/api";
 import "./MedicineOrder.css";
-import { useState, useEffect } from "react";
 
 function MedicineOrder() {
 
-  const [medicine, setMedicine] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [orders, setOrders] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
+  const [medicines,setMedicines]=useState([]);
 
-  // Load data from Local Storage
-  useEffect(() => {
-    const storedOrders = JSON.parse(localStorage.getItem("medicineOrders")) || [];
-    setOrders(storedOrders);
-  }, []);
+  useEffect(()=>{
 
-  // Save data to Local Storage
-  useEffect(() => {
-    localStorage.setItem("medicineOrders", JSON.stringify(orders));
-  }, [orders]);
+    fetchMedicines();
 
-  // Add or Update Order
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  },[]);
 
-    if (medicine === "" || quantity === "") {
-      alert("Please fill all fields");
-      return;
-    }
+  const fetchMedicines=async()=>{
 
-    const newOrder = {
-      medicine,
-      quantity,
-    };
+    const res=await API.get("/medicines");
 
-    if (editIndex === null) {
-      // Add
-      setOrders([...orders, newOrder]);
-      alert("Medicine Added Successfully");
-    } else {
-      // Update
-      const updatedOrders = [...orders];
-      updatedOrders[editIndex] = newOrder;
-      setOrders(updatedOrders);
-      setEditIndex(null);
-      alert("Medicine Updated Successfully");
-    }
-
-    setMedicine("");
-    setQuantity("");
-  };
-
-  // Edit
-  const handleEdit = (index) => {
-    setMedicine(orders[index].medicine);
-    setQuantity(orders[index].quantity);
-    setEditIndex(index);
-  };
-
-  // Delete
-  const handleDelete = (index) => {
-
-    if (window.confirm("Delete this medicine?")) {
-
-      const updatedOrders = orders.filter((_, i) => i !== index);
-
-      setOrders(updatedOrders);
-
-    }
+    setMedicines(res.data);
 
   };
 
-  return (
-    <div className="medicine-order-container">
+  const addToCart=(medicine)=>{
 
-      <h1>Medicine Order</h1>
+    let cart=JSON.parse(localStorage.getItem("cart")) || [];
 
-      <form onSubmit={handleSubmit}>
+    cart.push(medicine);
 
-        <input
-          type="text"
-          placeholder="Medicine Name"
-          value={medicine}
-          onChange={(e) => setMedicine(e.target.value)}
-        />
+    localStorage.setItem("cart",JSON.stringify(cart));
 
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-        />
+    alert("Medicine Added To Cart");
 
-        <button type="submit">
-          {editIndex === null ? "Add Medicine" : "Update Medicine"}
-        </button>
+  };
 
-      </form>
+  return(
 
-      <table>
+<div className="order-page">
 
-        <thead>
+<h1>Medicine Order</h1>
 
-          <tr>
-            <th>S.No</th>
-            <th>Medicine</th>
-            <th>Quantity</th>
-            <th>Actions</th>
-          </tr>
+<div className="order-grid">
 
-        </thead>
+{medicines.map((medicine)=>(
 
-        <tbody>
+<div className="order-card" key={medicine._id}>
 
-          {orders.length === 0 ? (
+<h3>{medicine.name}</h3>
 
-            <tr>
-              <td colSpan="4">No Medicines Ordered</td>
-            </tr>
+<p>{medicine.company}</p>
 
-          ) : (
+<p>₹ {medicine.price}</p>
 
-            orders.map((order, index) => (
+<button onClick={()=>addToCart(medicine)}>
 
-              <tr key={index}>
+Add To Cart
 
-                <td>{index + 1}</td>
+</button>
 
-                <td>{order.medicine}</td>
+</div>
 
-                <td>{order.quantity}</td>
+))}
 
-                <td>
+</div>
 
-                  <button onClick={() => handleEdit(index)}>
-                    Edit
-                  </button>
+</div>
 
-                  <button onClick={() => handleDelete(index)}>
-                    Delete
-                  </button>
+);
 
-                </td>
-
-              </tr>
-
-            ))
-
-          )}
-
-        </tbody>
-
-      </table>
-
-    </div>
-  );
 }
 
 export default MedicineOrder;
