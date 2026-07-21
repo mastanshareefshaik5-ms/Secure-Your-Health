@@ -1,92 +1,57 @@
-import "./ChatBot.css";
 import { useState } from "react";
+import "./ChatBot.css";
 
 function ChatBot() {
 
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
+  const [reply, setReply] = useState("");
 
   const sendMessage = () => {
 
-    if (message.trim() === "") return;
-
-    let reply = "";
-
     const msg = message.toLowerCase();
 
-    if (msg.includes("fever")) {
-      reply = "Drink plenty of water and consult a doctor if the fever continues.";
-    }
-    else if (msg.includes("cold")) {
-      reply = "Take rest, drink warm fluids and consult a doctor if symptoms worsen.";
-    }
-    else if (msg.includes("headache")) {
-      reply = "Stay hydrated and take proper rest. Visit a doctor if the headache is severe.";
-    }
-    else if (msg.includes("covid")) {
-      reply = "If you have COVID-19 symptoms, isolate yourself and consult a healthcare professional.";
-    }
-    else if (msg.includes("diabetes")) {
-      reply = "Maintain a healthy diet, exercise regularly and monitor your blood sugar levels.";
-    }
-    else {
-      reply = "I'm here to help with basic health questions. Please consult a doctor for medical advice.";
-    }
+    if (msg.includes("fever"))
+      setReply("Drink plenty of water and consult a doctor if fever persists.");
 
-    setChat([
-      ...chat,
-      {
-        user: message,
-        bot: reply
-      }
-    ]);
+    else if (msg.includes("headache"))
+      setReply("Take proper rest, stay hydrated, and consult a doctor if severe.");
 
-    setMessage("");
+    else if (msg.includes("covid"))
+      setReply("Wear a mask, isolate if necessary, and consult your healthcare provider.");
+
+    else if (msg.includes("diabetes"))
+      setReply("Maintain a healthy diet, exercise regularly, and monitor blood sugar.");
+
+    else if (msg.includes("blood"))
+      setReply("Visit the Blood Bank page to check blood availability.");
+
+    else
+      setReply("Please consult a qualified doctor for medical advice.");
   };
 
   return (
     <div className="chat-container">
 
-      <h1>🤖 AI Health ChatBot</h1>
+      <div className="chat-card">
 
-      <div className="chat-box">
+        <h2>AI Health Assistant</h2>
 
-        {chat.length === 0 && (
-          <p className="welcome">
-            Ask me anything about your health.
-          </p>
-        )}
-
-        {chat.map((item, index) => (
-
-          <div key={index}>
-
-            <div className="user-msg">
-              You : {item.user}
-            </div>
-
-            <div className="bot-msg">
-              Bot : {item.bot}
-            </div>
-
-          </div>
-
-        ))}
-
-      </div>
-
-      <div className="input-area">
-
-        <input
-          type="text"
-          placeholder="Type your question..."
+        <textarea
+          rows="5"
+          placeholder="Ask your health question..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
 
         <button onClick={sendMessage}>
-          Send
+          Ask
         </button>
+
+        {reply && (
+          <div className="reply">
+            {reply}
+          </div>
+        )}
 
       </div>
 
