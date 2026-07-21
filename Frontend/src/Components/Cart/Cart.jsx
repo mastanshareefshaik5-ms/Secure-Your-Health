@@ -1,101 +1,271 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Cart.css";
+import { toast } from "react-toastify";
 
-function Cart(){
+function Cart() {
 
-const [cart,setCart]=useState([]);
+  const [cart, setCart] = useState([
+    {
+      id: 1,
+      medicine: "Paracetamol",
+      price: 50,
+      quantity: 2,
+    },
+    {
+      id: 2,
+      medicine: "Vitamin C",
+      price: 120,
+      quantity: 1,
+    },
+    {
+      id: 3,
+      medicine: "Dolo 650",
+      price: 80,
+      quantity: 3,
+    },
+  ]);
 
-useEffect(()=>{
+  const increaseQty = (id) => {
 
-setCart(JSON.parse(localStorage.getItem("cart"))||[]);
+    setCart(
 
-},[]);
+      cart.map((item) =>
 
-const removeItem=(index)=>{
+        item.id === id
 
-const updated=[...cart];
+          ? {
 
-updated.splice(index,1);
+              ...item,
 
-setCart(updated);
+              quantity: item.quantity + 1,
 
-localStorage.setItem("cart",JSON.stringify(updated));
+            }
 
-};
+          : item
 
-const total=cart.reduce((sum,item)=>sum+Number(item.price),0);
+      )
 
-return(
+    );
 
-<div className="cart-page">
+  };
 
-<h1>Shopping Cart</h1>
+  const decreaseQty = (id) => {
 
-{cart.length===0?
+    setCart(
 
-<h2>No Medicines Added</h2>
+      cart.map((item) =>
 
-:
+        item.id === id && item.quantity > 1
 
-<>
+          ? {
 
-<table>
+              ...item,
 
-<thead>
+              quantity: item.quantity - 1,
 
-<tr>
+            }
 
-<th>Name</th>
+          : item
 
-<th>Company</th>
+      )
 
-<th>Price</th>
+    );
 
-<th>Action</th>
+  };
 
-</tr>
+  const removeItem = (id) => {
 
-</thead>
+    setCart(
 
-<tbody>
+      cart.filter((item) => item.id !== id)
 
-{cart.map((item,index)=>(
+    );
 
-<tr key={index}>
+    toast.success("Item Removed");
 
-<td>{item.name}</td>
+  };
 
-<td>{item.company}</td>
+  const total = cart.reduce(
 
-<td>₹{item.price}</td>
+    (sum, item) =>
 
-<td>
+      sum + item.price * item.quantity,
 
-<button onClick={()=>removeItem(index)}>
+    0
 
-Remove
+  );
 
-</button>
+  return (
 
-</td>
+    <div className="cart-page">
 
-</tr>
+      <h1 className="cart-title">
 
-))}
+        Medicine Cart
 
-</tbody>
+      </h1>
 
-</table>
+      {
 
-<h2>Total : ₹ {total}</h2>
+        cart.length === 0 ?
 
-</>
+        (
 
-}
+          <div className="empty-cart">
 
-</div>
+            Your Cart is Empty
 
-);
+          </div>
+
+        )
+
+        :
+
+        (
+
+          <>
+
+            <div className="cart-grid">
+
+              {
+
+                cart.map((item)=>(
+
+                  <div
+
+                    className="cart-card"
+
+                    key={item.id}
+
+                  >
+
+                    <h2>
+
+                      {item.medicine}
+
+                    </h2>
+
+                    <p>
+
+                      Price : ₹{item.price}
+
+                    </p>
+
+                    <p>
+
+                      Quantity : {item.quantity}
+
+                    </p>
+
+                    <p>
+
+                      Total : ₹{
+
+                        item.price *
+
+                        item.quantity
+
+                      }
+
+                    </p>
+
+                    <div className="qty-buttons">
+
+                      <button
+
+                        onClick={()=>
+
+                          decreaseQty(item.id)
+
+                        }
+
+                      >
+
+                        -
+
+                      </button>
+
+                      <button
+
+                        onClick={()=>
+
+                          increaseQty(item.id)
+
+                        }
+
+                      >
+
+                        +
+
+                      </button>
+
+                    </div>
+
+                    <button
+
+                      className="remove-btn"
+
+                      onClick={()=>
+
+                        removeItem(item.id)
+
+                      }
+
+                    >
+
+                      Remove
+
+                    </button>
+
+                  </div>
+
+                ))
+
+              }
+
+            </div>
+
+            <div className="cart-summary">
+
+              <h2>
+
+                Grand Total
+
+              </h2>
+
+              <h1>
+
+                ₹{total}
+
+              </h1>
+
+              <button
+
+                className="checkout-btn"
+
+                onClick={()=>
+
+                  toast.success("Order Placed Successfully")
+
+                }
+
+              >
+
+                Checkout
+
+              </button>
+
+            </div>
+
+          </>
+
+        )
+
+      }
+
+    </div>
+
+  );
 
 }
 
