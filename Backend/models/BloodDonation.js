@@ -1,31 +1,27 @@
-// Backend/models/BloodDonation.js
+import mongoose from "mongoose";
 
-const mongoose=require("mongoose");
+const bloodDonationSchema=new mongoose.Schema(
 
-const bloodDonationSchema=new mongoose.Schema({
+{
 
-donorName:{
-type:String,
-required:true,
+name:String,
+
+bloodGroup:String,
+
+age:Number,
+
+phone:String,
+
+address:String,
+
 },
 
-bloodGroup:{
-type:String,
-required:true,
-},
+{
 
-phone:{
-type:String,
-required:true,
-},
+timestamps:true,
 
-city:{
-type:String,
-required:true,
 }
 
-},{
-timestamps:true
-});
+);
 
-module.exports=mongoose.model("BloodDonation",bloodDonationSchema);
+export default mongoose.model("BloodDonation",bloodDonationSchema);
