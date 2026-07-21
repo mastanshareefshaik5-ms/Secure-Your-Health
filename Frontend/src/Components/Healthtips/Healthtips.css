@@ -1,0 +1,96 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+.healthtips-page{
+padding:30px;
+background:#f5f7fb;
+min-height:100vh;
+}
+
+.healthtips-header{
+text-align:center;
+margin-bottom:40px;
+}
+
+.healthtips-header h1{
+font-size:38px;
+color:#198754;
+margin-bottom:10px;
+}
+
+.healthtips-header p{
+font-size:18px;
+color:#666;
+max-width:700px;
+margin:auto;
+line-height:1.7;
+}
+
+.tips-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+gap:25px;
+}
+
+.tip-card{
+background:#fff;
+padding:25px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+transition:.3s;
+border-top:5px solid #198754;
+}
+
+.tip-card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+.tip-card h2{
+font-size:24px;
+color:#198754;
+margin-bottom:15px;
+}
+
+.tip-card p{
+font-size:16px;
+line-height:1.8;
+color:#555;
+text-align:justify;
+}
+
+@media(max-width:768px){
+
+.healthtips-page{
+padding:20px;
+}
+
+.healthtips-header h1{
+font-size:30px;
+}
+
+.healthtips-header p{
+font-size:16px;
+}
+
+.tips-grid{
+grid-template-columns:1fr;
+}
+
+.tip-card{
+padding:20px;
+}
+
+.tip-card h2{
+font-size:22px;
+}
+
+.tip-card p{
+font-size:15px;
+}
+
+}
