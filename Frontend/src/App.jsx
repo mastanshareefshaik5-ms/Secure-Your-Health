@@ -25,7 +25,7 @@ import Cart from "./Components/Cart/Cart";
 import ChatBot from "./Components/ChatBot/ChatBot";
 import Profile from "./Components/Profile/Profile";
 import Contact from "./Components/Contacts/Contact";
-import HealthTips from "./Components/Healthtips/HealthTips";
+import Healthtips from "./Components/Healthtips/Healthtips";
 
 const Layout = ({ children }) => (
   <>
