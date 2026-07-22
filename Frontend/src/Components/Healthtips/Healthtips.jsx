@@ -1,4 +1,4 @@
-import "./HealthTips.css";
+import "./Healthtips.css";
 
 function HealthTips() {
 
