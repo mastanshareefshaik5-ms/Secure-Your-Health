@@ -1,14 +1,14 @@
 import axios from "axios";
 
-// Change this URL after deploying your backend
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Automatically attach JWT token to every request
 API.interceptors.request.use(
   (config) => {
-
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -18,6 +18,19 @@ API.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 export default API;
